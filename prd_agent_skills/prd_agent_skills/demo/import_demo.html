@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML原型导入演示</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .upload-section:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .upload-section.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .upload-btn:hover {
+            background: #5a67d8;
+        }
+
+        .result-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .page-info {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .export-btn {
+            background: #48bb78;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #38a169;
+        }
+
+        .export-btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 HTML原型导入工具</h1>
+
+        <div class="upload-section" id="uploadSection">
+            <h3>拖拽HTML文件到这里或点击选择</h3>
+            <p>支持单页面HTML文件，自动解析页面结构</p>
+            <input type="file" id="htmlFile" accept=".html,.htm">
+            <button class="upload-btn" onclick="document.getElementById('htmlFile').click()">
+                选择文件
+            </button>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <h3>📋 导入结果</h3>
+            <div id="pageList"></div>
+            <button class="export-btn" id="exportBtn" onclick="exportPreview()">
+                📥 导出预览HTML
+            </button>
+        </div>
+    </div>
+
+    <script src="html_importer.js"></script>
+    <script>
+        const uploadSection = document.getElementById('uploadSection');
+        const htmlFile = document.getElementById('htmlFile');
+        const resultSection = document.getElementById('resultSection');
+        const pageList = document.getElementById('pageList');
+        const exportBtn = document.getElementById('exportBtn');
+
+        // 拖拽功能
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        });
+
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.classList.remove('dragover');
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type === 'text/html') {
+                handleFile(files[0]);
+            } else {
+                alert('请选择HTML文件');
+            }
+        });
+
+        // 文件选择
+        htmlFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        // 处理文件
+        function handleFile(file) {
+            window.htmlImporter.importHTML(file).then(result => {
+                if (result.success) {
+                    displayResult(result);
+                } else {
+                    alert('导入失败: ' + result.error);
+                }
+            });
+        }
+
+        // 显示结果
+        function displayResult(result) {
+            resultSection.style.display = 'block';
+
+            let pageListHTML = `
+                <p>成功导入 ${result.pages.length} 个页面</p>
+                <p>发现 ${result.assets.length} 个资源文件</p>
+
+                <h4>页面列表：</h4>
+            `;
+
+            result.pages.forEach((page, index) => {
+                pageListHTML += `
+                    <div class="page-info">
+                        <strong>${index + 1}. ${page.title}</strong>
+                        <p>内容长度: ${page.content.length} 字符</p>
+                        <p>交互元素: ${page.links.length} 个链接/按钮</p>
+                        <p>表单元素: ${page.elements.length} 个</p>
+                    </div>
+                `;
+            });
+
+            pageList.innerHTML = pageListHTML;
+            exportBtn.disabled = false;
+        }
+
+        // 导出预览
+        function exportPreview() {
+            window.htmlImporter.exportPreviewHTML();
+        }
+
+        // 创建示例HTML文件
+        function createSampleHTML() {
+            const sampleContent = `
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>示例原型</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .header { background: #333; color: white; padding: 20px; }
+        .nav { background: #f0f0f0; padding: 15px; }
+        .main { padding: 20px; }
+        .card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>我的应用</h1>
+    </div>
+
+    <div class="nav">
+        <a href="#home">首页</a> |
+        <a href="#products">产品</a> |
+        <a href="#contact">联系</a>
+    </div>
+
+    <div class="main">
+        <div id="home">
+            <h2>欢迎来到首页</h2>
+            <div class="card">
+                <h3>产品介绍</h3>
+                <p>这是一个示例产品，展示了基本的HTML结构。</p>
+                <button onclick="showMessage('点击了产品按钮')">了解更多</button>
+            </div>
+        </div>
+
+        <div id="products" style="display:none;">
+            <h2>产品列表</h2>
+            <div class="card">
+                <h3>产品A</h3>
+                <p>这是产品A的详细描述。</p>
+                <button onclick="showMessage('选择了产品A')">选择</button>
+            </div>
+            <div class="card">
+                <h3>产品B</h3>
+                <p>这是产品B的详细描述。</p>
+                <button onclick="showMessage('选择了产品B')">选择</button>
+            </div>
+        </div>
+
+        <div id="contact" style="display:none;">
+            <h2>联系我们</h2>
+            <form>
+                <input type="text" placeholder="姓名" required><br><br>
+                <input type="email" placeholder="邮箱" required><br><br>
+                <textarea placeholder="留言" rows="4"></textarea><br><br>
+                <button type="submit">发送</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showMessage(msg) {
+            alert(msg);
+        }
+
+        // 简单的页面切换
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = this.getAttribute('href').substring(1);
+                document.querySelectorAll('.main > div').forEach(div => {
+                    div.style.display = 'none';
+                });
+                document.getElementById(target).style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>`;
+
+            const blob = new Blob([sampleContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sample_prototype.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 添加创建示例按钮
+        document.querySelector('.container').innerHTML += `
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="upload-btn" onclick="createSampleHTML()" style="background: #9f7aea;">
+                    📄 创建示例HTML
+                </button>
+            </div>
+        `;
+    </script>
+</body>
+</html>

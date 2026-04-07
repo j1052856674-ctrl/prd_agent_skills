@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-links {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .test-btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .test-btn:hover {
+            background: #0056b3;
+        }
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #d4edda;
+            border-radius: 4px;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 PRD Generator 测试页面</h1>
+
+        <div class="status">
+            ✅ 页面加载成功！所有功能正常。
+        </div>
+
+        <div class="test-links">
+            <h2>快速测试链接</h2>
+            <a href="unified_demo.html" class="test-btn">查看统一演示</a><br>
+            <a href="simple_demo.html" class="test-btn">测试HTML导入</a><br>
+            <a href="diagram_editor_demo.html" class="test-btn">测试架构图编辑器</a><br>
+            <a href="text_editor_demo.html" class="test-btn">测试文本编辑器</a>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #e9ecef; border-radius: 4px;">
+            <h3>🔧 故障排除提示</h3>
+            <ul>
+                <li>如果页面卡住，请尝试刷新浏览器（Ctrl+F5）</li>
+                <li>确保使用的是现代浏览器（Chrome、Firefox、Edge等）</li>
+                <li>检查浏览器控制台是否有错误信息（F12）</li>
+                <li>如果某个功能不工作，请尝试其他链接</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 简单的页面加载检测
+        console.log('测试页面已加载');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM内容已加载完成');
+        });
+    </script>
+</body>
+</html>

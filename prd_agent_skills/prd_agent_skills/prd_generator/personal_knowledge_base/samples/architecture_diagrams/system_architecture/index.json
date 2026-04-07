@@ -1,0 +1,109 @@
+{
+  "diagrams": [
+    {
+      "id": "system_arch_001",
+      "name": "微服务架构图",
+      "type": "system_architecture",
+      "category": "架构设计",
+      "filename": "微服务架构图.md",
+      "description": "展示微服务系统的架构组成，包括API网关、业务服务、数据服务等核心组件",
+      "complexity": "high",
+      "industry": "互联网",
+      "tags": ["微服务", "分布式", "架构"],
+      "keywords": ["API网关", "服务注册", "负载均衡", "服务发现"],
+      "usage_count": 15,
+      "rating": 4.5,
+      "created_at": "2024-04-07",
+      "features": {
+        "has_subgraphs": true,
+        "has_interfaces": true,
+        "has_classes": false,
+        "has_sequences": false,
+        "has_decisions": false,
+        "line_count": 45,
+        "element_count": 20
+      },
+      "classification": {
+        "type": "system_architecture",
+        "confidence": 0.95,
+        "category": "架构设计",
+        "complexity": "high"
+      },
+      "recommendations": {
+        "templates": ["微服务架构模板", "云原生模板"],
+        "examples": ["电商平台架构", "支付系统架构"],
+        "tools": ["draw.io", "lucidchart"]
+      }
+    },
+    {
+      "id": "system_arch_002",
+      "name": "分层架构图",
+      "type": "system_architecture",
+      "category": "架构设计",
+      "filename": "分层架构图.md",
+      "description": "经典的分层架构设计，表现层、业务层、数据层的清晰分离",
+      "complexity": "medium",
+      "industry": "通用",
+      "tags": ["分层", "架构", "MVC"],
+      "keywords": ["表现层", "业务层", "数据层", "MVC"],
+      "usage_count": 25,
+      "rating": 4.2,
+      "created_at": "2024-04-07",
+      "features": {
+        "has_subgraphs": true,
+        "has_interfaces": false,
+        "has_classes": false,
+        "has_sequences": false,
+        "has_decisions": false,
+        "line_count": 30,
+        "element_count": 15
+      },
+      "classification": {
+        "type": "system_architecture",
+        "confidence": 0.92,
+        "category": "架构设计",
+        "complexity": "medium"
+      },
+      "recommendations": {
+        "templates": ["标准分层模板", "企业架构模板"],
+        "examples": ["Web应用架构", "管理系统架构"],
+        "tools": ["Enterprise Architect", "Visio"]
+      }
+    },
+    {
+      "id": "system_arch_003",
+      "name": "领域驱动设计",
+      "type": "system_architecture",
+      "category": "架构设计",
+      "filename": "领域驱动设计.md",
+      "description": "基于DDD（Domain-Driven Design）的系统架构设计",
+      "complexity": "high",
+      "industry": "企业级",
+      "tags": ["DDD", "领域", "聚合", "限界上下文"],
+      "keywords": ["领域", "聚合", "限界上下文", "聚合根"],
+      "usage_count": 8,
+      "rating": 4.7,
+      "created_at": "2024-04-07",
+      "features": {
+        "has_subgraphs": true,
+        "has_interfaces": true,
+        "has_classes": true,
+        "has_sequences": false,
+        "has_decisions": false,
+        "line_count": 50,
+        "element_count": 25
+      },
+      "classification": {
+        "type": "system_architecture",
+        "confidence": 0.98,
+        "category": "架构设计",
+        "complexity": "high"
+      },
+      "recommendations": {
+        "templates": ["DDD模板", "领域模型模板"],
+        "examples": ["企业ERP架构", "金融核心系统"],
+        "tools": ["StarUML", "Visual Paradigm"]
+      }
+    }
+  ]
+}

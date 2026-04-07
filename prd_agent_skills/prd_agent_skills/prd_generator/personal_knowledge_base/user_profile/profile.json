@@ -1,0 +1,79 @@
+{
+  "user_id": "user_001",
+  "name": "用户",
+  "created_at": "2024-04-07T00:00:00Z",
+  "updated_at": "2024-04-07T00:00:00Z",
+  "preferences": {
+    "template_types": ["data_intelligence_agent"],
+    "industries": ["数据智能"],
+    "complexity_levels": ["high"],
+    "chart_preferences": ["four_stage_architecture"],
+    "tags": ["技术型", "详细", "AI驱动"],
+    "export_formats": ["md", "html"],
+    "template_style": {
+      "prd_structure": "8_chapters",
+      "architecture_style": "four_stage_layered",
+      "color_scheme": "blue_theme",
+      "interaction_features": ["editable", "metric_cards", "priority_tags"]
+    }
+  },
+  "skills": {
+    "prd_creation": {
+      "level": "beginner",
+      "experience": 0,
+      "completed_prds": 0
+    },
+    "diagram_design": {
+      "level": "beginner",
+      "experience": 0,
+      "created_diagrams": 0
+    },
+    "prototype_design": {
+      "level": "beginner",
+      "experience": 0,
+      "created_prototypes": 0
+    }
+  },
+  "interests": {
+    "architecture_design": {
+      "total_interactions": 0,
+      "positive_interactions": 0,
+      "last_interaction": null
+    },
+    "business_flow": {
+      "total_interactions": 0,
+      "positive_interactions": 0,
+      "last_interaction": null
+    },
+    "data_modeling": {
+      "total_interactions": 0,
+      "positive_interactions": 0,
+      "last_interaction": null
+    }
+  },
+  "behavior_history": {},
+  "usage_statistics": {
+    "total_sessions": 0,
+    "total_generations": 0,
+    "successful_generations": 0,
+    "average_session_time": 0,
+    "favorite_features": []
+  },
+  "learning_style": {
+    "preferred_input": "text",
+    "learning_speed": "moderate",
+    "visual_learner": true,
+    "step_by_step": true
+  },
+  "custom_settings": {
+    "auto_save": true,
+    "show_progress": true,
+    "enable_tips": true,
+    "theme": "light"
+  },
+  "notification_settings": {
+    "generation_complete": true,
+    "new_templates": true,
+    "feedback_requests": false
+  }
+}

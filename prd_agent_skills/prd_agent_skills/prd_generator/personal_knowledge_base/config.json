@@ -1,0 +1,91 @@
+{
+  "knowledge_base": {
+    "name": "PRD Generator 个人知识库",
+    "version": "1.0.0",
+    "description": "支持智能推荐的个性化产品需求文档生成知识库",
+    "created_at": "2024-04-07",
+    "updated_at": "2024-04-07",
+    "max_file_size": "10MB",
+    "max_files_per_category": 1000,
+    "retention_days": 365,
+    "auto_cleanup": true
+  },
+  "recommendation": {
+    "enabled": true,
+    "engine": "hybrid",
+    "factors": {
+      "user_preference": 0.4,
+      "content_similarity": 0.3,
+      "popularity": 0.2,
+      "freshness": 0.1
+    },
+    "max_recommendations": 5,
+    "similarity_threshold": 0.7
+  },
+  "classification": {
+    "enabled": true,
+    "auto_tagging": true,
+    "hierarchy_depth": 3,
+    "confidence_threshold": 0.8
+  },
+  "quality_assessment": {
+    "enabled": true,
+    "metrics": {
+      "completeness": 0.3,
+      "clarity": 0.3,
+      "structure": 0.2,
+      "professionalism": 0.2
+    },
+    "auto_rating": true,
+    "user_feedback": true
+  },
+  "user_profile": {
+    "enabled": true,
+    "learning_rate": 0.1,
+    "max_history": 1000,
+    "preferences": {
+      "template_types": [],
+      "industries": [],
+      "complexity_levels": [],
+      "chart_preferences": []
+    }
+  },
+  "search": {
+    "enabled": true,
+    "engine": "vector",
+    "max_results": 20,
+    "filters": {
+      "industry": true,
+      "complexity": true,
+      "date_range": true,
+      "rating": true
+    }
+  },
+  "multimodal": {
+    "enabled": true,
+    "supported_formats": {
+      "documents": ["md", "txt", "docx", "pdf"],
+      "images": ["png", "jpg", "jpeg", "svg", "webp"],
+      "tables": ["xlsx", "csv"],
+      "voice": ["mp3", "wav", "m4a"]
+    },
+    "ocr_enabled": true,
+    "stt_enabled": false,
+    "embedding_model": "text-embedding-ada-002"
+  },
+  "ecosystem": {
+    "enabled": true,
+    "connections": {
+      "diagram_tools": ["draw.io", "lucidchart"],
+      "prototype_tools": ["figma", "sketch"],
+      "document_tools": ["notion", "confluence"]
+    },
+    "export_formats": ["md", "html", "docx", "pdf", "json"]
+  },
+  "security": {
+    "encryption_enabled": false,
+    "backup_enabled": true,
+    "backup_interval": "daily",
+    "access_control": false
+  }
+}
