@@ -1,0 +1,185 @@
+{
+  "knowledge_base": {
+    "name": "PRD Generator 个人知识库",
+    "version": "2.2.0",
+    "description": "支持智能推荐的个性化产品需求文档生成知识库（v2.2市场调研+架构图双升级）",
+    "created_at": "2024-04-07",
+    "updated_at": "2026-04-09",
+    "max_file_size": "10MB",
+    "max_files_per_category": 1000,
+    "retention_days": 365,
+    "auto_cleanup": true
+  },
+  "diagram_generation": {
+    "enabled": true,
+    "strategy": "dual_track",
+    "preferred_method": "drawio",
+    "selection_logic": {
+      "drawio_triggers": ["复杂流程图", "业务流程", "需要本地编辑", "交互密集型"],
+      "mermaid_triggers": ["需要嵌入文档", "简单图表", "用户明确要求"],
+      "weight_factors": {
+        "complexity": 0.4,
+        "edit_need": 0.3,
+        "user_preference": 0.2,
+        "type_match": 0.1
+      }
+    },
+    "template_matching": {
+      "ecommerce_flow": ["下单", "支付", "订单"],
+      "user_registration": ["注册", "登录", "用户"],
+      "approval_flow": ["审批", "流程", "申请"],
+      "system_architecture": ["系统", "架构", "组件"],
+      "api_sequence": ["API", "接口", "调用"]
+    }
+  },
+  "recommendation": {
+    "enabled": true,
+    "engine": "hybrid",
+    "factors": {
+      "user_preference": 0.4,
+      "content_similarity": 0.3,
+      "popularity": 0.2,
+      "freshness": 0.1
+    },
+    "max_recommendations": 5,
+    "similarity_threshold": 0.7
+  },
+  "classification": {
+    "enabled": true,
+    "auto_tagging": true,
+    "hierarchy_depth": 3,
+    "confidence_threshold": 0.8
+  },
+  "quality_assessment": {
+    "enabled": true,
+    "metrics": {
+      "completeness": 0.3,
+      "clarity": 0.3,
+      "structure": 0.2,
+      "professionalism": 0.2
+    },
+    "auto_rating": true,
+    "user_feedback": true
+  },
+  "user_profile": {
+    "enabled": true,
+    "learning_rate": 0.1,
+    "max_history": 1000,
+    "preferences": {
+      "template_types": [],
+      "industries": [],
+      "complexity_levels": [],
+      "chart_preferences": [],
+        "diagram_generation": {
+          "preferred_method": "drawio",
+          "drawio_templates": [],
+          "mermaid_preferences": [],
+          "sample_memory": {
+            "features": [],
+            "scenarios": [],
+            "user_feedback": []
+          }
+        }
+    }
+  },
+  "search": {
+    "enabled": true,
+    "engine": "vector",
+    "max_results": 20,
+    "filters": {
+      "industry": true,
+      "complexity": true,
+      "date_range": true,
+      "rating": true
+    }
+  },
+  "market_research": {
+    "enabled": true,
+    "strategy": "dual_track",
+    "data_sources": {
+      "market_analysis": {
+        "priority": "A",
+        "sources": [
+          "国家统计局",
+          "工信部",
+          "教育部",
+          "艾瑞咨询",
+          "易观分析",
+          "QuestMobile",
+          "头豹研究院"
+        ],
+        "search_engines": ["WebSearch"],
+        "domain_filters": [".gov.cn", ".org", ".edu"],
+        "file_types": ["pdf", "报告"]
+      },
+      "function_research": {
+        "priority": "A",
+        "sources": [
+          {
+            "name": "知乎",
+            "domain": "zhihu.com",
+            "type": "community"
+          },
+          {
+            "name": "小红书",
+            "domain": "xiaohongshu.com",
+            "type": "community"
+          },
+          {
+            "name": "GitHub",
+            "domain": "github.com",
+            "type": "code"
+          }
+        ],
+        "search_engines": ["exa_search"],
+        "focus_areas": ["功能对比", "实现方式", "用户体验"]
+      }
+    },
+    "scoring": {
+      "market_analysis": {
+        "authority": 0.4,
+        "timeliness": 0.3,
+        "completeness": 0.2,
+        "validation": 0.1
+      },
+      "function_research": {
+        "reliability": 0.3,
+        "timeliness": 0.25,
+        "expertise": 0.25,
+        "evidence": 0.2
+      }
+    },
+    "templates": {
+      "market_report": "market_analysis_template.md",
+      "function_report": "function_research_template.md"
+    }
+  },
+  "multimodal": {
+    "enabled": true,
+    "supported_formats": {
+      "documents": ["md", "txt", "docx", "pdf"],
+      "images": ["png", "jpg", "jpeg", "svg", "webp"],
+      "tables": ["xlsx", "csv"],
+      "voice": ["mp3", "wav", "m4a"]
+    },
+    "ocr_enabled": true,
+    "stt_enabled": false,
+    "embedding_model": "text-embedding-ada-002"
+  },
+  "ecosystem": {
+    "enabled": true,
+    "connections": {
+      "diagram_tools": ["draw.io", "lucidchart"],
+        "primary_tool": "draw.io"
+      "prototype_tools": ["figma", "sketch"],
+      "document_tools": ["notion", "confluence"]
+    },
+    "export_formats": ["md", "html", "docx", "pdf", "json"]
+  },
+  "security": {
+    "encryption_enabled": false,
+    "backup_enabled": true,
+    "backup_interval": "daily",
+    "access_control": false
+  }
+}

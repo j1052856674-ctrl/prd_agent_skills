@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字编辑器演示</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .editable-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .editable {
+            border: 1px dashed transparent;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: text;
+            transition: all 0.3s;
+            min-height: 50px;
+        }
+
+        .editable:hover {
+            background: #f0f0f0;
+            border-color: #007bff;
+        }
+
+        .editable.editing {
+            background: white;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+        }
+
+        .toolbar {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .toolbar-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 0 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .toolbar-btn:hover {
+            background: #0056b3;
+        }
+
+        .toolbar-divider {
+            margin: 0 10px;
+            color: #dee2e6;
+        }
+
+        .stats {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e7f3ff;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+
+        .stats h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+
+        .stat-item {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .export-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f8f0;
+            border-radius: 8px;
+            border: 1px solid #d4edda;
+        }
+
+        .export-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+        }
+
+        .import-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 8px;
+            border: 1px solid #ffeaa7;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+        }
+
+        .sample-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 12px;
+            color: #495057;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .text-editor-toolbar {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .text-editor-toolbar .toolbar-btn {
+            margin: 2px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .editing-animation {
+            animation: pulse 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✏️ 智能文字编辑器演示</h1>
+
+        <div class="toolbar">
+            <h3>编辑工具栏</h3>
+            <button class="toolbar-btn" onclick="textEditor.bold()">B (加粗)</button>
+            <button class="toolbar-btn" onclick="textEditor.italic()">I (斜体)</button>
+            <button class="toolbar-btn" onclick="textEditor.underline()">U (下划线)</button>
+            <span class="toolbar-divider">|</span>
+            <button class="toolbar-btn" onclick="textEditor.insertList()">• 列表</button>
+            <button class="toolbar-btn" onclick="textEditor.insertNumberedList()">1. 列表</button>
+            <button class="toolbar-btn" onclick="textEditor.insertLink()">🔗 链接</button>
+            <span class="toolbar-divider">|</span>
+            <button class="toolbar-btn" onclick="textEditor.undo()">↶ 撤销</button>
+            <button class="toolbar-btn" onclick="textEditor.redo()">↷ 重做</button>
+            <span class="toolbar-divider">|</span>
+            <button class="toolbar-btn" onclick="textEditor.clearFormat()">清除格式</button>
+        </div>
+
+        <div class="stats">
+            <h3>📊 编辑统计</h3>
+            <div id="statsContent">
+                <div class="stat-item">正在统计...</div>
+            </div>
+        </div>
+
+        <div class="editable-section">
+            <h3>📝 简单文本编辑</h3>
+            <p>点击下面的文本开始编辑。支持快捷键：</p>
+            <ul>
+                <li><span class="highlight">Enter</span> - 保存编辑</li>
+                <li><span class="highlight">Esc</span> - 取消编辑</li>
+                <li><span class="highlight">Ctrl/Cmd + Z</span> - 撤销</li>
+                <li><span class="highlight">Ctrl/Cmd + Y</span> - 重做</li>
+                <li><span class="highlight">Ctrl/Cmd + S</span> - 保存所有</li>
+            </ul>
+            <div class="editable" contenteditable="false">
+                在这里点击开始编辑这段文字。编辑时会自动显示格式工具栏，支持基本的富文本编辑功能。
+            </div>
+        </div>
+
+        <div class="editable-section">
+            <h3>📋 富文本编辑</h3>
+            <p>这个区域支持更复杂的富文本编辑：</p>
+            <div class="editable" contenteditable="false">
+                <h4>产品介绍</h4>
+                <p>这是一个<strong>富文本编辑</strong>示例，你可以：</p>
+                <ul>
+                    <li>添加<strong>加粗</strong>和<em>斜体</em>文字</li>
+                    <li>插入<u>下划线</u>文本</li>
+                    <li>创建有序和无序列表</li>
+                    <li>添加<a href="#">链接</a></li>
+                </ul>
+                <p>双击可以全选文本，按Tab键插入缩进。</p>
+            </div>
+        </div>
+
+        <div class="editable-section">
+            <h3>📝 代码和特殊内容</h3>
+            <p>编辑器会保留代码块的格式：</p>
+            <div class="code-block">
+                <pre>// 这是一个代码示例
+function greet(name) {
+    return "Hello, " + name + "!";
+}
+
+// 调用函数
+console.log(greet("World"));</pre>
+            </div>
+            <div class="editable" contenteditable="false">
+                你可以在上面编辑代码，编辑器会尝试保留代码的格式。但是请注意，富文本编辑器可能会改变代码的缩进。
+            </div>
+        </div>
+
+        <div class="export-section">
+            <h3>💾 导出和导入</h3>
+            <p>你可以导出所有编辑的内容，之后可以重新导入恢复。</p>
+            <button class="export-btn" onclick="exportContent()">导出内容</button>
+            <button class="export-btn" onclick="clearAll()">清空所有</button>
+            <input type="file" id="importFile" accept=".json" onchange="importContent(event)">
+            <button class="export-btn" onclick="document.getElementById('importFile').click()">导入内容</button>
+        </div>
+
+        <div class="import-section">
+            <h3>📄 使用说明</h3>
+            <div class="sample-content">
+// 使用方法：
+// 1. 点击任意可编辑区域开始编辑
+// 2. 使用工具栏或快捷键进行格式化
+// 3. 按Enter或点击其他地方保存
+// 4. 支持撤销和重做操作
+// 5. 可以导出保存所有编辑内容
+            </div>
+        </div>
+    </div>
+
+    <script src="text_editor.js"></script>
+    <script>
+        // 初始化编辑器
+        document.addEventListener('DOMContentLoaded', function() {
+            window.textEditor.init('.editable');
+            updateStats();
+
+            // 监听保存事件
+            document.addEventListener('textEditor:save', function(e) {
+                console.log('内容已保存:', e.detail);
+                updateStats();
+            });
+        });
+
+        // 更新统计信息
+        function updateStats() {
+            const stats = window.textEditor.getStats();
+            const statsContent = document.getElementById('statsContent');
+
+            statsContent.innerHTML = `
+                <div class="stat-item">总元素数: ${stats.totalElements}</div>
+                <div class="stat-item">可编辑元素: ${stats.editableElements}</div>
+                <div class="stat-item">已编辑元素: ${stats.editedElements}</div>
+                <div class="stat-item">总字数: ${stats.totalWords}</div>
+                <div class="stat-item">总字符数: ${stats.totalCharacters}</div>
+            `;
+        }
+
+        // 导出内容
+        function exportContent() {
+            const data = window.textEditor.exportAll();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'text-editor-content.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 导入内容
+        function importContent(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        window.textEditor.importAll(data);
+                        updateStats();
+                        alert('内容导入成功！');
+                    } catch (error) {
+                        alert('导入失败: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // 清空所有
+        function clearAll() {
+            if (confirm('确定要清空所有编辑内容吗？')) {
+                window.textEditor.editables.forEach(element => {
+                    element.innerHTML = '';
+                    element.classList.remove('edited');
+                });
+                updateStats();
+            }
+        }
+
+        // 添加编辑完成的动画效果
+        document.addEventListener('textEditor:save', function(e) {
+            const element = document.querySelector(`[id="${e.detail.elementId}"], [class*="${e.detail.elementId}"]`);
+            if (element) {
+                element.classList.add('editing-animation');
+                setTimeout(() => {
+                    element.classList.remove('editing-animation');
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>

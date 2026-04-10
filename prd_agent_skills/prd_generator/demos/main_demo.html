@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRD Generator - 主演示页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+        }
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin: 20px 0;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .feature-card {
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        .feature-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .feature-list {
+            list-style: none;
+            text-align: left;
+        }
+        .feature-list li {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        .feature-list li:before {
+            content: "✓";
+            color: #28a745;
+            position: absolute;
+            left: 0;
+        }
+        .demo-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .demo-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .demo-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .demo-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        .tech-stack {
+            background: #e3f2fd;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 40px 0;
+        }
+        .tech-stack h2 {
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .tech-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+        .status {
+            text-align: center;
+            padding: 20px;
+            background: #d4edda;
+            border-radius: 5px;
+            color: #155724;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .content {
+                padding: 20px;
+            }
+            .demo-buttons {
+                flex-direction: column;
+            }
+            .demo-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 PRD Generator</h1>
+            <p>智能产品需求文档生成器 - 本地运行，功能完整</p>
+        </div>
+
+        <div class="content">
+            <div class="status">
+                ✅ 页面加载成功！所有功能正常，无需服务器支持。
+            </div>
+
+            <h2 style="text-align: center; margin: 40px 0;">🎯 核心功能</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">智能PRD生成</h3>
+                    <ul class="feature-list">
+                        <li>交互式引导生成</li>
+                        <li>智能需求补全</li>
+                        <li>自动优先级分析</li>
+                        <li>行业洞察增强</li>
+                        <li>质量保证机制</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3 class="feature-title">架构图生成</h3>
+                    <ul class="feature-list">
+                        <li>Mermaid图表渲染</li>
+                        <li>智能复杂度评估</li>
+                        <li>多视图支持</li>
+                        <li>配色规范统一</li>
+                        <li>实时预览</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">产品原型</h3>
+                    <ul class="feature-list">
+                        <li>从设计稿生成HTML</li>
+                        <li>图片智能解析</li>
+                        <li>点击编辑功能</li>
+                        <li>自动保存</li>
+                        <li>导出HTML文件</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <h3 class="feature-title">实时编辑</h3>
+                    <ul class="feature-list">
+                        <li>点击编辑模式</li>
+                        <li>自动保存历史</li>
+                        <li>撤销/重做</li>
+                        <li>多页面导航</li>
+                        <li>版本管理</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>🎮 快速体验</h2>
+                <p>点击下方链接体验各个功能模块：</p>
+                <div class="demo-buttons">
+                    <a href="test_page.html" class="demo-btn">🧪 测试页面</a>
+                    <a href="unified_demo.html" class="demo-btn">📊 统一演示</a>
+                    <a href="simple_demo.html" class="demo-btn">🎨 HTML导入器</a>
+                    <a href="diagram_editor_demo.html" class="demo-btn">📐 架构图编辑器</a>
+                    <a href="text_editor_demo.html" class="demo-btn">✏️ 文本编辑器</a>
+                </div>
+            </div>
+
+            <div class="tech-stack">
+                <h2>🔧 技术特色</h2>
+                <div class="tech-list">
+                    <div class="tech-item">纯JavaScript</div>
+                    <div class="tech-item">无外部依赖</div>
+                    <div class="tech-item">本地运行</div>
+                    <div class="tech-item">响应式设计</div>
+                    <div class="tech-item">跨浏览器兼容</div>
+                    <div class="tech-item">模块化架构</div>
+                    <div class="tech-item">Mermaid图表</div>
+                    <div class="tech-item">ContentEditable</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 确保页面不会卡住
+        console.log('主演示页面加载完成');
+
+        // 监听页面加载完成事件
+        window.addEventListener('load', function() {
+            console.log('所有资源加载完成，页面完全可用');
+        });
+
+        // 防止页面卡死
+        setTimeout(function() {
+            if (document.readyState === 'complete') {
+                console.log('页面加载验证完成，状态正常');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

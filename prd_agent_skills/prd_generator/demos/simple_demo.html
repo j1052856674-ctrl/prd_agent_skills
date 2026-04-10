@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简化版原型导入工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* 交互式提示样式 */
+        .intro-tour {
+            position: relative;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            cursor: help;
+        }
+
+        .intro-tour:hover .tour-details {
+            display: block;
+        }
+
+        .tour-icon {
+            display: inline-block;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .tour-details {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            margin-top: 10px;
+        }
+
+        .tour-details h4 {
+            margin-top: 0;
+            color: #667eea;
+        }
+
+        .tour-details ul {
+            margin-bottom: 0;
+        }
+
+        .close-tour {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-tour:hover {
+            color: #333;
+        }
+
+        .upload-section {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .upload-section:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .upload-section.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+            margin: 10px;
+        }
+
+        .upload-btn:hover {
+            background: #5a67d8;
+        }
+
+        .file-types {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+
+        .file-types h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        .file-types ul {
+            margin-bottom: 0;
+        }
+
+        .preview-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .preview-section h3 {
+            color: #495057;
+        }
+
+        .preview-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            min-height: 300px;
+        }
+
+        .simple-steps {
+            background: #f0f8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .simple-steps h3 {
+            color: #28a745;
+            margin-top: 0;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin: 0 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+        }
+
+        .step h4 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        .export-btn {
+            background: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #218838;
+        }
+
+        .export-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .create-sample {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 简化版原型导入工具</h1>
+
+        <!-- 交互式提示 -->
+        <div class="intro-tour" id="introTour">
+            <span>📖 使用指南 <span class="tour-icon">❓</span></span>
+            <div class="tour-details" id="tourDetails">
+                <button class="close-tour" onclick="closeTour()">×</button>
+                <h4>快速上手指南</h4>
+                <ol>
+                    <li><strong>上传文件</strong>：点击上传区域或选择文件</li>
+                    <li><strong>选择类型</strong>：支持HTML文件或设计稿图片</li>
+                    <li><strong>生成原型</strong>：系统自动生成可编辑页面</li>
+                    <li><strong>编辑内容</strong>：点击任意文字即可编辑</li>
+                    <li><strong>导出保存</strong>：完成后可以导出HTML文件</li>
+                </ol>
+                <div style="margin-top: 15px; padding: 10px; background: #f0f4ff; border-radius: 4px;">
+                    <p><strong>💡 提示：</strong> </p>
+                    <ul style="margin-top: 5px;">
+                        <li>支持拖拽文件到上传区域</li>
+                        <li>编辑时按Ctrl+Z可撤销</li>
+                        <li>内容会自动保存，无需手动保存</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="simple-steps">
+            <h3>🚀 超简单三步走</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>上传文件</h4>
+                    <p>拖拽或点击上传HTML文件/设计稿</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>Claude分析</h4>
+                    <p>智能解析，生成可编辑页面</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>开始编辑</h4>
+                    <p>点击任意文字即可编辑</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="file-types">
+            <h3>📁 支持的文件类型</h3>
+            <ul>
+                <li><strong>HTML文件：</strong> 直接解析页面结构</li>
+                <li><strong>设计稿图片：</strong> Claude会分析布局和内容</li>
+                <li><strong>截图：</strong> 任何界面截图都可以转换为可编辑HTML</li>
+            </ul>
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>极速处理</h3>
+                <p>无需复杂配置，即传即用</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>智能解析</h3>
+                <p>利用Claude的强大理解能力</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✏️</div>
+                <h3>轻松编辑</h3>
+                <p>点击即可编辑，所见即所得</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>零学习成本</h3>
+                <p>熟悉的编辑体验，无需学习</p>
+            </div>
+        </div>
+
+        <div class="upload-section" id="uploadSection">
+            <h3>📂 拖拽文件到这里或点击选择</h3>
+            <p>支持HTML文件、设计稿图片、截图等</p>
+            <input type="file" id="fileInput" accept=".html,.htm,image/*">
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                选择文件
+            </button>
+        </div>
+
+        <div class="preview-section" id="previewSection">
+            <h3>📋 生成结果</h3>
+            <div class="preview-content" id="previewContent">
+                <div class="loading">正在处理...</div>
+            </div>
+            <button class="export-btn" id="exportBtn" onclick="exportHTML()">
+                💾 导出HTML文件
+            </button>
+        </div>
+
+        <div class="create-sample">
+            <button class="upload-btn" style="background: #9f7aea;" onclick="createSample()">
+                📄 创建示例页面
+            </button>
+            <small style="color: #666; display: block; margin-top: 10px;">点击快速体验编辑功能</small>
+        </div>
+    </div>
+
+    <script src="simple_html_importer.js"></script>
+    <script src="simple_text_editor.js"></script>
+    <script>
+        const uploadSection = document.getElementById('uploadSection');
+
+        // 添加操作提示
+        let hintText = '';
+        let hintTimeout;
+
+        function showHint(message, duration = 3000) {
+            // 清除之前的提示
+            if (hintTimeout) {
+                clearTimeout(hintTimeout);
+            }
+
+            // 创建提示元素
+            let hint = document.getElementById('hintMessage');
+            if (!hint) {
+                hint = document.createElement('div');
+                hint.id = 'hintMessage';
+                hint.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #333;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    z-index: 9999;
+                    font-size: 14px;
+                    max-width: 300px;
+                    animation: slideIn 0.3s ease;
+                `;
+                document.body.appendChild(hint);
+            }
+
+            hint.textContent = message;
+            hint.style.display = 'block';
+
+            // 自动隐藏
+            hintTimeout = setTimeout(() => {
+                hint.style.display = 'none';
+            }, duration);
+        }
+
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        const fileInput = document.getElementById('fileInput');
+        const previewSection = document.getElementById('previewSection');
+        const previewContent = document.getElementById('previewContent');
+        const exportBtn = document.getElementById('exportBtn');
+        let currentHTML = '';
+
+        // 交互式提示功能
+        function showTour() {
+            document.getElementById('tourDetails').style.display = 'block';
+            // 点击外部关闭提示
+            setTimeout(() => {
+                document.addEventListener('click', closeTourOnOutside);
+            }, 100);
+        }
+
+        function closeTour() {
+            document.getElementById('tourDetails').style.display = 'none';
+            document.removeEventListener('click', closeTourOnOutside);
+        }
+
+        function closeTourOnOutside(event) {
+            const tour = document.getElementById('introTour');
+            if (!tour.contains(event.target)) {
+                closeTour();
+            }
+        }
+
+        // 页面加载时显示提示
+        window.addEventListener('load', function() {
+            setTimeout(showTour, 1000);
+        });
+
+        // 拖拽功能
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+            showHint('松开鼠标以上传文件');
+        });
+
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.classList.remove('dragover');
+            showHint('将文件拖拽到上传区域', 2000);
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                showHint('正在处理文件...');
+                handleFile(files[0]);
+            }
+        });
+
+        // 文件选择
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                showHint('已选择文件，正在处理...');
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        // 处理文件
+        function handleFile(file) {
+            const fileType = file.type;
+            let fileTypeText = '';
+
+            if (fileType.startsWith('image/')) {
+                fileTypeText = '图片文件';
+            } else if (fileType === 'text/html') {
+                fileTypeText = 'HTML文件';
+            } else {
+                fileTypeText = '未知类型文件';
+            }
+
+            // 显示处理中
+            previewSection.style.display = 'block';
+            previewContent.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>正在处理${fileTypeText}...</p>
+                    <small>文件大小: ${(file.size / 1024).toFixed(2)} KB</small>
+                </div>
+            `;
+
+            // 添加加载动画样式
+            if (!document.getElementById('loadingStyle')) {
+                const loadingStyle = document.createElement('style');
+                loadingStyle.id = 'loadingStyle';
+                loadingStyle.textContent = `
+                    .loading {
+                        text-align: center;
+                        padding: 40px;
+                    }
+                    .loading-spinner {
+                        width: 40px;
+                        height: 40px;
+                        border: 4px solid #f3f3f3;
+                        border-top: 4px solid #667eea;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                        margin: 0 auto 20px;
+                    }
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(loadingStyle);
+            }
+
+            // 使用简化导入器
+            window.simpleHTMLImporter.import(file).then(html => {
+                currentHTML = html;
+                previewContent.innerHTML = html;
+                exportBtn.disabled = false;
+
+                // 添加成功提示
+                const successMsg = document.createElement('div');
+                successMsg.className = 'success-message';
+                successMsg.innerHTML = `
+                    <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <strong>✅ 处理完成！</strong>
+                        <p style="margin: 10px 0 0 0;">点击页面中的任意文字即可编辑。</p>
+                        <small style="display: block; margin-top: 10px; opacity: 0.8;">提示：编辑时按Ctrl+Z可撤销操作</small>
+                    </div>
+                `;
+                previewContent.insertBefore(successMsg, previewContent.firstChild);
+
+                // 初始化文本编辑功能
+                if (window.SimpleTextEditor) {
+                    window.SimpleTextEditor.init();
+                }
+
+                // 显示成功提示
+                showHint('文件处理成功！现在可以编辑内容了', 4000);
+            }).catch(error => {
+                previewContent.innerHTML = `
+                    <div style="color: #721c24; background: #f8d7da; padding: 15px; border-radius: 5px; border: 1px solid #f5c6cb;">
+                        <strong>❌ 处理失败:</strong> ${error.message}
+                        <div style="margin-top: 10px;">
+                            <button onclick="location.reload()" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">重新加载页面</button>
+                        </div>
+                    </div>
+                `;
+                showHint('处理失败，请重试', 3000);
+            });
+        }
+
+        // 导出HTML
+        function exportHTML() {
+            if (currentHTML) {
+                showHint('正在生成HTML文件...');
+
+                setTimeout(() => {
+                    const blob = new Blob([currentHTML], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `editable-prototype_${new Date().getTime()}.html`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                    showHint('文件已下载！', 2000);
+                }, 500);
+            } else {
+                showHint('没有可导出的内容', 2000);
+            }
+        }
+
+        // 创建示例
+        function createSample() {
+            showHint('正在创建示例页面...');
+
+            // 模拟一个示例HTML文件
+            const sampleHTML = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>示例电商页面</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        .header { background: #333; color: white; padding: 20px; }
+        .product { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .product img { max-width: 200px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>我的商店</h1>
+    </div>
+    <div class="content">
+        <h2>热门商品</h2>
+        <div class="product">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E商品图片%3C/text%3E%3C/svg%3E" alt="商品">
+            <h3>商品名称</h3>
+            <p>商品描述和价格信息</p>
+            <button>加入购物车</button>
+        </div>
+        <div class="product">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E商品图片%3C/text%3E%3C/svg%3E" alt="商品">
+            <h3>商品名称</h3>
+            <p>商品描述和价格信息</p>
+            <button>加入购物车</button>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            setTimeout(() => {
+                const blob = new Blob([sampleHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+
+                // 模拟文件选择
+                const file = new File([blob], 'sample.html', { type: 'text/html' });
+                handleFile(file);
+            }, 500);
+        }
+    </script>
+</body>
+</html>

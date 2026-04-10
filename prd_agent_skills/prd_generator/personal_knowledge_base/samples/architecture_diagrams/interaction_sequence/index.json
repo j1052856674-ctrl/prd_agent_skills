@@ -1,0 +1,109 @@
+{
+  "diagrams": [
+    {
+      "id": "sequence_001",
+      "name": "用户登录时序",
+      "type": "interaction_sequence",
+      "category": "业务流程",
+      "filename": "用户登录时序.md",
+      "description": "用户登录系统时，前端、后端、数据库之间的交互时序",
+      "complexity": "medium",
+      "industry": "通用",
+      "tags": ["登录", "时序", "交互"],
+      "keywords": ["登录", "验证", "会话", "token"],
+      "usage_count": 18,
+      "rating": 4.2,
+      "created_at": "2024-04-07",
+      "features": {
+        "has_subgraphs": false,
+        "has_interfaces": false,
+        "has_classes": false,
+        "has_sequences": true,
+        "has_decisions": false,
+        "line_count": 25,
+        "element_count": 15
+      },
+      "classification": {
+        "type": "interaction_sequence",
+        "confidence": 0.98,
+        "category": "业务流程",
+        "complexity": "medium"
+      },
+      "recommendations": {
+        "templates": ["API时序模板", "用户交互模板"],
+        "examples": ["注册时序", "支付时序"],
+        "tools": ["PlantUML", "SequenceDiagram"]
+      }
+    },
+    {
+      "id": "sequence_002",
+      "name": "API调用时序",
+      "type": "interaction_sequence",
+      "category": "业务流程",
+      "filename": "API调用时序.md",
+      "description": "微服务之间API调用的时序图，展示服务间的通信流程",
+      "complexity": "high",
+      "industry": "互联网",
+      "tags": ["API", "微服务", "调用"],
+      "keywords": ["服务调用", "API", "熔断", "限流"],
+      "usage_count": 10,
+      "rating": 4.5,
+      "created_at": "2024-04-07",
+      "features": {
+        "has_subgraphs": false,
+        "has_interfaces": false,
+        "has_classes": false,
+        "has_sequences": true,
+        "has_decisions": true,
+        "line_count": 40,
+        "element_count": 25
+      },
+      "classification": {
+        "type": "interaction_sequence",
+        "confidence": 0.97,
+        "category": "业务流程",
+        "complexity": "high"
+      },
+      "recommendations": {
+        "templates": ["微服务时序模板", "API调用模板"],
+        "examples": ["订单创建时序", "支付处理时序"],
+        "tools": ["Postman", "Swagger"]
+      }
+    },
+    {
+      "id": "sequence_003",
+      "name": "数据同步时序",
+      "type": "interaction_sequence",
+      "category": "业务流程",
+      "filename": "数据同步时序.md",
+      "description": "分布式系统中数据同步的时序流程",
+      "complexity": "high",
+      "industry": "分布式系统",
+      "tags": ["数据同步", "分布式", "消息队列"],
+      "keywords": ["同步", "消息", "队列", "事件"],
+      "usage_count": 8,
+      "rating": 4.3,
+      "created_at": "2024-04-07",
+      "features": {
+        "has_subgraphs": false,
+        "has_interfaces": false,
+        "has_classes": false,
+        "has_sequences": true,
+        "has_decisions": true,
+        "line_count": 35,
+        "element_count": 20
+      },
+      "classification": {
+        "type": "interaction_sequence",
+        "confidence": 0.96,
+        "category": "业务流程",
+        "complexity": "high"
+      },
+      "recommendations": {
+        "templates": ["数据流模板", "事件驱动模板"],
+        "examples": ["实时同步", "最终一致性"],
+        "tools": ["Kafka", "RabbitMQ"]
+      }
+    }
+  ]
+}
